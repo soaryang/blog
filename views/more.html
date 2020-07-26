@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>飞哥博客</title>
+    <meta name="keywords" content="关键词,关键词,关键词,关键词,5个关键词"/>
+    <meta name="description" content="网站简介，不超过80个字"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/index.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                type: "GET",
+                url:"/v1/api/article/page?tagId=<%= tagId %>&pageNumber=1&pageSize=20",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (resp) {
+                    var rows = resp.data.rows;
+                    if(rows!=null){
+                        var html = '';
+                        for(var i=0;i<rows.length; i++){
+                            html +="<li><a href=\"/"+rows[i].id+".html\"><span>"+rows[i].updateTimeStr+"</span>"+rows[i].articleName+"</a></li>"
+                        }
+                        $("#designUl").html(html);
+                    }
+                },
+                error: function (err) {
+                    //data.error(err)
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div class="logo"><a href="/">飞哥博客</a></div>
+    <div class="top-nav">
+        <h2 id="mnavh"><span class="navicon"></span></h2>
+        <ul id="nav">
+        </ul>
+    </div>
+</header>
+<aside class="side">
+    <div class="about"><i><a href="/"><img src="/static/images/avatar.jpg"></a></i>
+        <p>
+            飞哥，一个80后IT屌丝！一边工作一边积累经验，分享一些个人技术心得。
+        </p>
+    </div>
+</aside>
+<main>
+    <div class="main-content">
+        <div class="welcome"> <span><a href="/">主页</a></span></div>
+        <div class="newsbox">
+            <section  style="width: 100%;">
+                <div class="news">
+                    <h2 class="newstitle"><span><a href="/"></a></span><b>设计模式</b></h2>
+                    <ul id="designUl">
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="blank"></div>
+        <!--<div class="copyright">-->
+            <!--<p>Copyright 2018 Inc. AllRights Reserved. Design by <a href="/">杨青个人博客</a> 蜀ICP备11002373号-1</p>-->
+        <!--</div>-->
+    </div>
+</main>
+<!--<a href="#" class="cd-top cd-is-visible">Top</a>-->
+</body>
+</html>

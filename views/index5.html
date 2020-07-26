@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown Editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <script src="https://unpkg.com/lodash@4.16.0"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <style>
+        .dev::-webkit-scrollbar {
+            display: none !important;
+            width: 0px;
+            height: 0px;
+        }
+    </style>
+</head>
+<body>
+<div id="editor" style="border: #1BA1E2 1px solid; width: 80%;">
+    <textarea :value="input" @input="update"></textarea>
+    <div v-html="compiledMarkdown"></div>
+</div>
+
+
+<script>
+    var object = new Vue({
+        el: "#editor",
+        data: {
+            input: "# Hello World! "
+        },
+        computed: {
+            compiledMarkdown: function() {
+                return marked(this.input, { sanitize: true });
+            }
+        },
+        methods: {
+            update: _.debounce(function(e) {
+                this.input = e.target.value;
+            }, 300)
+        }
+    });
+</script>
+</body>
+</html>
